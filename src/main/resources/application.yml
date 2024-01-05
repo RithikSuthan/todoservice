@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://Rithik_Suthan_S:8098329762@cluster0.nwyrzl2.mongodb.net/toDoList
+      database: toDoList
+
+server:
+  port: 8080
+
