@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class newPlanService {
     @Autowired
@@ -25,5 +27,10 @@ public class newPlanService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"Plan message is empty\"}");
         }
            return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"Data added Successfully\"}");
+    }
+    public ResponseEntity<?>getPlan()
+    {
+        List<newPlan> plans=mongoTemplate.findAll(newPlan.class);
+        return ResponseEntity.ok(plans);
     }
 }
