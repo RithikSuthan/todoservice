@@ -1,0 +1,5 @@
+com\todolistservice\todoservice\TodoserviceApplication.class
+com\todolistservice\todoservice\service\newPlanService.class
+com\todolistservice\todoservice\controller\planController.class
+com\todolistservice\todoservice\mongoConfig\mongoConfig.class
+com\todolistservice\todoservice\model\newPlan.class
