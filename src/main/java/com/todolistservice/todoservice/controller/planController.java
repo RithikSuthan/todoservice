@@ -25,5 +25,10 @@ public class planController {
         {
             return planService.getPlan();
         }
+        @PatchMapping("/updateStatus")
+        public ResponseEntity<?> updateStatus(@RequestParam(required = false) String taskNo)
+        {
+            return planService.updateStatus(taskNo);
+        }
 
 }

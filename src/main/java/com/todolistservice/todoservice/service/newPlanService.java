@@ -4,11 +4,17 @@ import com.todolistservice.todoservice.model.newPlan;
 import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,6 +25,7 @@ public class newPlanService {
     {
         if (plan.getPlan()!=null || plan.getPlan()!="")
         {
+            plan.setTaskNo(generateTaskNo());
             plan.setStatus(false);
             mongoTemplate.save(plan);
         }
@@ -32,5 +39,32 @@ public class newPlanService {
     {
         List<newPlan> plans=mongoTemplate.findAll(newPlan.class);
         return ResponseEntity.ok(plans);
+    }
+    public ResponseEntity<?> updateStatus(String taskNo) {
+        Query query = new Query(Criteria.where("taskNo").is(taskNo));
+
+        newPlan existingPlan = mongoTemplate.findOne(query, newPlan.class);
+
+        if (existingPlan != null) {
+            boolean currentStatus = existingPlan.isStatus();
+
+            newPlan updatedPlan = mongoTemplate.findAndModify(
+                    query,
+                    new Update().set("status", !currentStatus),
+                    FindAndModifyOptions.options().returnNew(true),
+                    newPlan.class
+            );
+
+            String message = "Status updated successfully. New status: " + updatedPlan.isStatus();
+            return ResponseEntity.ok("{\"status\":\"success\", \"message\":\"" + message + "\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"status\":\"error\", \"message\":\"Plan not found with taskNo: " + taskNo + "\"}");
+        }
+    }
+    private String generateTaskNo() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMddyyyyHHmmss");
+        String formattedDate = dateFormat.format(new Date());
+        return formattedDate;
     }
 }
