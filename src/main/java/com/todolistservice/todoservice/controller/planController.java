@@ -30,5 +30,9 @@ public class planController {
         {
             return planService.updateStatus(taskNo);
         }
-
+        @DeleteMapping("/deleteTask")
+        public ResponseEntity<?> deleteTask(@RequestParam(required = false) String taskNo)
+        {
+            return planService.deleteTask(taskNo);
+        }
 }

@@ -1,5 +1,6 @@
 package com.todolistservice.todoservice.service;
 
+import com.mongodb.client.result.DeleteResult;
 import com.todolistservice.todoservice.model.newPlan;
 import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,20 @@ public class newPlanService {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("{\"status\":\"error\", \"message\":\"Plan not found with taskNo: " + taskNo + "\"}");
+        }
+    }
+
+    public ResponseEntity<?>deleteTask(String taskNo) {
+        Query query = new Query(Criteria.where("taskNo").is(taskNo));
+
+        newPlan existingPlan = mongoTemplate.findOne(query, newPlan.class);
+        if (existingPlan != null) {
+            mongoTemplate.remove(query, newPlan.class);
+            String message = "Deleted successfully.";
+            return ResponseEntity.ok("{\"status\":\"success\", \"message\":\"" + message + "\"}");
+        } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"status\":\"error\", \"message\":\"Plan not found\"}");
         }
     }
     private String generateTaskNo() {
