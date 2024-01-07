@@ -12,11 +12,13 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @Service
 public class newPlanService {
     @Autowired
