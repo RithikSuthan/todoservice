@@ -79,6 +79,28 @@ public class newPlanService {
                     .body("{\"status\":\"error\", \"message\":\"Plan not found\"}");
         }
     }
+    public ResponseEntity<?> editTask(String taskNo,String newPlan) {
+        Query query = new Query(Criteria.where("taskNo").is(taskNo));
+
+        newPlan existingPlan = mongoTemplate.findOne(query, newPlan.class);
+
+        if (existingPlan != null) {
+            boolean currentStatus = existingPlan.isStatus();
+
+            newPlan updatedPlan = mongoTemplate.findAndModify(
+                    query,
+                    new Update().set("plan",newPlan ),
+                    FindAndModifyOptions.options().returnNew(true),
+                    newPlan.class
+            );
+
+            String message = "Plan updated successfully. New status: " + updatedPlan.getPlan();
+            return ResponseEntity.ok("{\"status\":\"success\", \"message\":\"" + message + "\"}");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"status\":\"error\", \"message\":\"Plan not found with taskNo: " + taskNo + "\"}");
+        }
+    }
     private String generateTaskNo() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMddyyyyHHmmss");
         String formattedDate = dateFormat.format(new Date());

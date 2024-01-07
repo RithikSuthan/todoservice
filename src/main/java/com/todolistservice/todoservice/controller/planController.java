@@ -35,4 +35,10 @@ public class planController {
         {
             return planService.deleteTask(taskNo);
         }
+
+        @PatchMapping("/editTask")
+        public ResponseEntity<?> editTask(@RequestParam(required = false) String taskNo,@RequestParam(required = false) String newPlan)
+        {
+            return planService.editTask(taskNo,newPlan);
+        }
 }
