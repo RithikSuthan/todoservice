@@ -2,6 +2,7 @@ package com.todolistservice.todoservice.controller;
 
 
 import com.todolistservice.todoservice.model.newPlan;
+import com.todolistservice.todoservice.model.newUser;
 import com.todolistservice.todoservice.service.newPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,4 +42,10 @@ public class planController {
         {
             return planService.editTask(taskNo,newPlan);
         }
+        @PutMapping("/registerUser")
+        public ResponseEntity<?> addUser(@RequestBody(required = false) newUser user)
+        {
+            return planService.addUser(user);
+        }
+
 }

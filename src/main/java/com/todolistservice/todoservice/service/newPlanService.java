@@ -2,6 +2,7 @@ package com.todolistservice.todoservice.service;
 
 import com.mongodb.client.result.DeleteResult;
 import com.todolistservice.todoservice.model.newPlan;
+import com.todolistservice.todoservice.model.newUser;
 import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -105,5 +106,17 @@ public class newPlanService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMddyyyyHHmmss");
         String formattedDate = dateFormat.format(new Date());
         return formattedDate;
+    }
+    public ResponseEntity<?>addUser(newUser user)
+    {
+        if (user.getEmailId()!=null && user.getEmailId()!="" && user.getPassword()!=null && user.getPassword()!="")
+        {
+            mongoTemplate.save(user);
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"Email or Password is empty\"}");
+        }
+        return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"Data added Successfully\"}");
     }
 }
