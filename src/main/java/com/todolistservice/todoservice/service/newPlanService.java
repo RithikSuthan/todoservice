@@ -117,6 +117,6 @@ public class newPlanService {
         {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"Email or Password is empty\"}");
         }
-        return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"Data added Successfully\"}");
+        return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"User added Successfully\"}");
     }
 }
