@@ -119,4 +119,21 @@ public class newPlanService {
         }
         return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"User added Successfully\"}");
     }
+    public ResponseEntity<?>getUser(newUser user)
+    {
+        if (user.getEmailId()!=null && user.getEmailId()!="" && user.getPassword()!=null && user.getPassword()!="")
+        {
+            Query query = new Query(Criteria.where("emailId").is(user.emailId).and("password").is(user.password));
+            newUser validUser = mongoTemplate.findOne(query, newUser.class);
+            if(validUser==null)
+            {
+                return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"Invalid Credentials\"}");
+            }
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"Email or Password is empty\"}");
+        }
+        return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"User Exist\"}");
+    }
 }

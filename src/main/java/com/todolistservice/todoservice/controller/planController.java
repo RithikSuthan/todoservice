@@ -47,5 +47,10 @@ public class planController {
         {
             return planService.addUser(user);
         }
+        @PostMapping("/loginUser")
+        public ResponseEntity<?> getUser(@RequestBody(required = false) newUser user)
+        {
+            return planService.getUser(user);
+        }
 
 }
