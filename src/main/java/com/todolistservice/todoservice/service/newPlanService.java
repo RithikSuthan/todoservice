@@ -111,7 +111,16 @@ public class newPlanService {
     {
         if (user.getEmailId()!=null && user.getEmailId()!="" && user.getPassword()!=null && user.getPassword()!="")
         {
-            mongoTemplate.save(user);
+            Query query = new Query(Criteria.where("emailId").is(user.emailId));
+            newUser existingUser = mongoTemplate.findOne(query, newUser.class);
+            if (existingUser==null)
+            {
+                mongoTemplate.save(user);
+            }
+            else
+            {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"status\":\"error\", \"message\":\"Already Existing User\"}");
+            }
         }
         else
         {
