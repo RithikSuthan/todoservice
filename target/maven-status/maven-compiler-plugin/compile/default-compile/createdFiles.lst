@@ -1,3 +1,4 @@
+com\todolistservice\todoservice\model\newUser.class
 com\todolistservice\todoservice\TodoserviceApplication.class
 com\todolistservice\todoservice\service\newPlanService.class
 com\todolistservice\todoservice\controller\planController.class
