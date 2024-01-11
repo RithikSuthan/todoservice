@@ -25,12 +25,13 @@ import java.util.List;
 public class newPlanService {
     @Autowired
     MongoTemplate mongoTemplate;
-    public ResponseEntity<?>addPlan(newPlan plan)
+    public ResponseEntity<?>addPlan(String userId,newPlan plan)
     {
         if (plan.getPlan()!=null || plan.getPlan()!="")
         {
             plan.setTaskNo(generateTaskNo());
             plan.setStatus(false);
+            plan.setUser(userId);
             mongoTemplate.save(plan);
         }
         else
@@ -39,9 +40,14 @@ public class newPlanService {
         }
            return ResponseEntity.ok().body("{\"status\":\"success\", \"message\":\"Data added Successfully\"}");
     }
-    public ResponseEntity<?>getPlan()
+    public ResponseEntity<?>getPlan(String user)
     {
-        List<newPlan> plans=mongoTemplate.findAll(newPlan.class);
+        Query query = new Query(Criteria.where("user").is(user));
+        List<newPlan> plans=mongoTemplate.find(query,newPlan.class);
+        if(plans.isEmpty())
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"status\":\"error\", \"message\":\"No plans for the user\"}");
+        }
         return ResponseEntity.ok(plans);
     }
     public ResponseEntity<?> updateStatus(String taskNo) {

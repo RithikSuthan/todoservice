@@ -9,4 +9,5 @@ public class newPlan {
     private String taskNo;
     private String plan;
     private boolean status;
+    private String user;
 }

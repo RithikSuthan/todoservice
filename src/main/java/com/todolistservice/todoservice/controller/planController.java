@@ -16,15 +16,15 @@ public class planController {
     @Autowired
     newPlanService planService;
     @PutMapping("/addPlan")
-        public ResponseEntity<?> addPlan(@RequestBody(required = false) newPlan plan)
+        public ResponseEntity<?> addPlan(@RequestHeader("user") String userId,@RequestBody(required = false) newPlan plan)
         {
-            return planService.addPlan(plan);
+            return planService.addPlan(userId,plan);
         }
 
         @GetMapping("/getPlan")
-        public ResponseEntity<?> getPlan()
+        public ResponseEntity<?> getPlan(@RequestHeader("user") String userId,@RequestParam(required = false) String user)
         {
-            return planService.getPlan();
+            return planService.getPlan(userId);
         }
         @PatchMapping("/updateStatus")
         public ResponseEntity<?> updateStatus(@RequestParam(required = false) String taskNo)
